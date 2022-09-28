@@ -8,7 +8,6 @@ import java.util.List;
 @Service
 public interface EventService {
 
-
     	Event createEvent(Event event);
     	Event updateEvent(Long id, Event event);
     	Event getEvent(Long id);

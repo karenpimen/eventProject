@@ -1,5 +1,6 @@
 package com.kh.implementation;
 
+import com.kh.api.EventMessaging;
 import com.kh.api.EventService;
 import com.kh.domain.Event;
 import com.kh.domain.EventType;
@@ -14,10 +15,30 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
-public class EventServiceImpl implements EventService {
+public class EventServiceImpl implements EventService{
+
+    @Autowired(required = false)
+    EventMessaging eventMessaging;
+
+    //@Autowired(required = false)
+    //EventProducer eventProducer;
+
 
     @Autowired
     private EventRepository eventRepository;
+
+    public void createKafkaEvent(Event kafkaEvent){
+        eventMessaging.createEvent(kafkaEvent);
+    }
+
+    public void updateKafkaEvent(Event kafkaEvent){
+        eventMessaging.updateEvent(kafkaEvent);
+    }
+
+    public void deleteKafkaEvent(Long id){
+        eventMessaging.deleteEvent(id);
+    }
+
 
     @PostConstruct
     public void initDoctor(){
@@ -28,6 +49,7 @@ public class EventServiceImpl implements EventService {
     }
     @Override
     public Event createEvent(Event event) {
+        //eventProducer.sendMessageCreate(event.getTitle());
         return eventRepository.save(event);
     }
 
